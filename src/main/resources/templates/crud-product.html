@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from wow.designgurus.in/sideNavigationLayout/light/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Nov 2019 05:11:53 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="template language" name="keywords">
+    <meta content="Design_Gurus" name="author">
+    <meta content="WOW Admin dashboard html template" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Product List</title>
+
+    <!--Preloader-CSS-->
+    <link rel="stylesheet" href="assets/plugins/preloader/preloader.css">
+
+    <!--bootstrap-4-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!--Custom Scroll-->
+    <link rel="stylesheet" href="assets/plugins/customScroll/jquery.mCustomScrollbar.min.css">
+    <!--Font Icons-->
+    <link rel="stylesheet" href="assets/icons/simple-line/css/simple-line-icons.css">
+    <link rel="stylesheet" href="assets/icons/dripicons/dripicons.css">
+    <link rel="stylesheet" href="assets/icons/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="assets/icons/eightyshades/eightyshades.css">
+    <link rel="stylesheet" href="assets/icons/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/icons/foundation/foundation-icons.css">
+    <link rel="stylesheet" href="assets/icons/metrize/metrize.css">
+    <link rel="stylesheet" href="assets/icons/typicons/typicons.min.css">
+    <link rel="stylesheet" href="assets/icons/weathericons/css/weather-icons.min.css">
+
+    <!--Date-range-->
+    <link rel="stylesheet" href="assets/plugins/date-range/daterangepicker.css">
+    <!--Drop-Zone-->
+    <link rel="stylesheet" href="assets/plugins/dropzone/dropzone.css">
+    <!--Full Calendar-->
+    <link rel="stylesheet" href="assets/plugins/full-calendar/fullcalendar.min.css">
+    <!--Normalize Css-->
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <!--Main Css-->
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<!--Navigation-->
+<nav id="navigation" class="navigation-sidebar">
+    <div class="navigation-header">
+        <a href="index-2.html"><span class="logo">Admin Panel</span></a>
+        <!--<img src="logo.png" alt="logo" class="brand" height="50">-->
+    </div>
+
+    <!--Navigation Menu Links-->
+    <div class="navigation-menu">
+
+        <ul class="menu-items custom-scroll">
+            <li>
+                <a th:href="@{dashboard}" >
+                    <span class="icon-thumbnail"><i class="dripicons-browser"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+
+            </li>
+            <li>
+                <a th:href="@{product-list}" >
+                    <span class="icon-thumbnail"><i class="dripicons-list"></i></span>
+                    <span class="title">Product List</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0);" class=" active">
+                    <span class="icon-thumbnail"><i class="dripicons-document"></i></span>
+                    <span class="title">Add-Edit-Delete</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!--Page Container-->
+<section class="page-container">
+    <div class="page-content-wrapper">
+        <!--Header Fixed-->
+        <div class="header fixed-header">
+            <div class="container-fluid" style="padding: 10px 25px">
+                <div class="row">
+                    <div class="col-9 col-md-6 d-lg-none">
+                        <a id="toggle-navigation" href="javascript:void(0);" class="icon-btn mr-3"><i class="fa fa-bars"></i></a>
+                        <span class="logo">Admin Panel</span>
+                    </div>
+                    <div class="col-lg-8 d-none d-lg-block">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Product List</li>
+                        </ol>
+                    </div>
+                    <div class="col-3 col-md-6 col-lg-4">
+                        <button onclick="addProduct()"  class="btn btn-primary btn-round pull-right d-none d-md-block">Add Product</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Main Content-->
+        <div class="content sm-gutter">
+            <div class="container-fluid padding-25 sm-padding-10">
+
+
+
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="block table-block mb-4">
+                        <div class="block-heading d-flex align-items-center"
+                             style="border:0; padding-bottom: 0;">
+                            <h5 class="text-truncate">Product List</h5>
+
+                        </div>
+                        <div class="custom-scroll" style="max-height: 380px;">
+                            <div class="table-responsive text-no-wrap">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Profit Rate</th>
+                                        <th>Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody  class="text-middle">
+                                    <tr th:each="product, loop : ${productList}">
+                                        <td th:text="${loop.count}"/>
+                                        <td th:text="${product.name}"/>
+                                        <td th:text="${product.price}"/>
+                                        <td th:text="${product.profitPercentage}"/>
+                                        <td th:text="${product.productType}"/>
+                                        <td >
+                                            <button th:onclick="updateThisProduct([[${product.id}]], [[${product.name}]],
+                                            [[${product.price}]], [[${product.profitPercentage}]], [[${product.productType}]] )"
+                                                    style="padding:5px 3px 5px 10px; text-align: center; margin-left: 3px" class="btn btn-dark"><i class=" fa fa-pencil"></i></button>
+                                            <a th:href="@{delete(id=${product.id})}"  style="padding:5px 3px 5px 10px; text-align: center; margin-left: 3px"class="btn btn-primary"><i class=" fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+</section>
+
+
+
+<!--Jquery-->
+<script type="text/javascript" src="assets/js/jquery-3.2.1.min.js"></script>
+<!--Bootstrap Js-->
+<script type="text/javascript" src="assets/js/popper.min.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<!--Modernizr Js-->
+<script type="text/javascript" src="assets/js/modernizr.custom.js"></script>
+
+<!--Morphin Search JS-->
+<script type="text/javascript" src="assets/plugins/morphin-search/classie.js"></script>
+<script type="text/javascript" src="assets/plugins/morphin-search/morphin-search.js"></script>
+<!--Morphin Search JS-->
+<script type="text/javascript" src="assets/plugins/preloader/pathLoader.js"></script>
+<script type="text/javascript" src="assets/plugins/preloader/preloader-main.js"></script>
+
+<!--Chart js-->
+<script type="text/javascript" src="assets/plugins/charts/Chart.min.js"></script>
+
+<!--Sparkline Chart Js-->
+<script type="text/javascript" src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+<script type="text/javascript" src="assets/plugins/sparkline/jquery.charts-sparkline.js"></script>
+
+<!--Custom Scroll-->
+<script type="text/javascript" src="assets/plugins/customScroll/jquery.mCustomScrollbar.min.js"></script>
+<!--Sortable Js-->
+<script type="text/javascript" src="assets/plugins/sortable2/sortable.min.js"></script>
+<!--DropZone Js-->
+<script type="text/javascript" src="assets/plugins/dropzone/dropzone.js"></script>
+<!--Date Range JS-->
+<script type="text/javascript" src="assets/plugins/date-range/moment.min.js"></script>
+<script type="text/javascript" src="assets/plugins/date-range/daterangepicker.js"></script>
+<!--CK Editor JS-->
+<script type="text/javascript" src="assets/plugins/ckEditor/ckeditor.js"></script>
+<!--Data-Table JS-->
+<script type="text/javascript" src="assets/plugins/data-tables/datatables.min.js"></script>
+<!--Editable JS-->
+<script type="text/javascript" src="assets/plugins/editable/editable.js"></script>
+<!--Full Calendar JS-->
+<script type="text/javascript" src="assets/plugins/full-calendar/fullcalendar.min.js"></script>
+
+<!--- Main JS -->
+<script src="assets/js/main.js"></script>
+
+
+
+
+
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addProductDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Product</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-6">
+                        <label>Name</label>
+                        <input id="productName" class="form-control" placeholder="Enter product name" type="text">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Price</label>
+                        <input id="productPrice" class="form-control" placeholder="Enter product price" type="number">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Select Product Type</label>
+                        <select id="productType" class="custom-select form-control">
+                            <option selected>RAM</option>
+                            <option>MOTHERBOARD</option>
+                            <option>GRAPHICS_CARD</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Profit Rate</label>
+                        <input id="profitRate" class="form-control" placeholder="Enter profit rate" type="number">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="saveProduct()" class="btn btn-success" >Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Update Product Modal -->
+<div class="modal fade" id="updateProductDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Update Product</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-6">
+                        <label>Name</label>
+                        <input id="updateProductName" class="form-control" placeholder="Enter product name" type="text">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Price</label>
+                        <input id="updateProductPrice" class="form-control" placeholder="Enter product price" type="number">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Select Product Type</label>
+                        <select id="updateProductType" class="custom-select form-control">
+                            <option selected>RAM</option>
+                            <option>MOTHERBOARD</option>
+                            <option>GRAPHICS_CARD</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Profit Rate</label>
+                        <input id="updateProfitRate" class="form-control" placeholder="Enter profit rate" type="number">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="updateProduct()" class="btn btn-success" >Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+
+    function addProduct(){
+
+        $("#addProductDialog").modal("show");
+    }
+
+    function saveProduct() {
+
+        var name = $("#productName").val();
+        var price = $("#productPrice").val();
+        var type = $("#productType").val();
+        var rate = $("#profitRate").val();
+
+        if(name=='' || price=='' || type=='' || rate==''){
+            alert("Please fil up the blanks at first.")
+        }else{
+
+            $.post("/admin/add-product",{
+                name: name,
+                price: price,
+                rate: rate,
+                type: type
+            }, function (status) {
+                if(status){
+                    $("#addProductDialog").modal('hide');
+                    window.open('/admin/crud-product','_self');
+                }else{
+                    alert("Product can't save, Please try again.");
+                }
+            });
+
+        }
+
+    }
+
+
+    function updateThisProduct(id, name, price, rate, type) {
+
+        selectedProductForUpdate = id;
+
+        $("#updateProductName").val(name);
+        $("#updateProductPrice").val(price);
+        $("#updateProfitRate").val(rate);
+        $("#updateProductType").val(type);
+
+        $("#updateProductDialog").modal('show');
+
+    }
+
+    function updateProduct() {
+
+        var name = $("#updateProductName").val();
+        var price = $("#updateProductPrice").val();
+        var type = $("#updateProductType").val();
+        var rate = $("#updateProfitRate").val();
+
+        if(name=='' || price=='' || type=='' || rate==''){
+            alert("Please fil up the blanks at first.")
+        }else{
+
+            $.post("/admin/update-product",{
+                id: selectedProductForUpdate,
+                name: name,
+                price: price,
+                rate: rate,
+                type: type
+            }, function (status) {
+                if(status){
+                    $("#addProductDialog").modal('hide');
+                    window.open('/admin/crud-product','_self');
+                }else{
+                    alert("Product can't update product, Please try again.");
+                }
+            });
+
+        }
+    }
+
+
+
+</script>
+
+
+
+</body>
+
+<!-- Mirrored from wow.designgurus.in/sideNavigationLayout/light/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Nov 2019 05:14:43 GMT -->
+</html>
+</body>
+</html>
