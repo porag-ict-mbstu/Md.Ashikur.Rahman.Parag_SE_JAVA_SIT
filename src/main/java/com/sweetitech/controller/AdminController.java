@@ -33,9 +33,9 @@ public class AdminController {
         Collections.sort(productList, new Comparator<Product>() {
             @Override
             public int compare(Product product, Product product1) {
-                double d=(product1.getProfitPercentage()-product.getProfitPercentage());
-                int ans=(int)d;
-                return ans;
+                double difference=(product1.getProfitPercentage()-product.getProfitPercentage());
+                int isLarge=(int)difference;
+                return isLarge;
             }
         });
         List<Product>topFive=new ArrayList<Product>();
